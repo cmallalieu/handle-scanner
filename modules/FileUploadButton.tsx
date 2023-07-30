@@ -1,5 +1,3 @@
-import { AvailabilityInfo } from "@/pages/api/isAvailable";
-import { fetchServerResponse } from "next/dist/client/components/router-reducer/fetch-server-response";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import DownloadCSVButton from "./DownloadCSVButton";
 import { Redis } from "@upstash/redis";
@@ -41,12 +39,11 @@ const FileUploadButton: React.FC = () => {
 
   const fetchAvailability = async () => {
     await redis.set("wordsToFind", wordList);
-    alert(wordList);
+
     const availableWords = await fetch(
       `${window.location.origin}/api/isAvailable`
     ).then((res) => res.json());
 
-    alert(JSON.stringify(availableWords));
     setAvailableWords(availableWords.availableWords);
   };
 

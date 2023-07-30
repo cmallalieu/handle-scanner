@@ -15,8 +15,6 @@ const Blockfrost = new BlockFrostAPI({
   projectId: process.env.BLOCKFROST_PROJECT_ID as string,
 });
 
-type BlockfrostFetch = ReturnType<typeof Blockfrost.assetsAddresses>;
-
 export interface AvailabilityInfo {
   name: string;
   isAvailable: boolean;
@@ -55,18 +53,12 @@ async function handleIsAvailableFetch(name: string): Promise<AvailabilityInfo> {
   const assetId = `${HANDLE_POLICY_ID}${assetName}`;
 
   try {
-    const assetLocations = await Blockfrost.assetsAddresses(assetId);
-    return assetLocations.length === 0
-      ? {
-          name,
-          isAvailable: false,
-        }
-      : {
-          name,
-          isAvailable: false,
-        };
+    await Blockfrost.assetsAddresses(assetId);
+    return {
+      name,
+      isAvailable: false,
+    };
   } catch (e) {
-    console.error(e);
     return {
       name,
       isAvailable: true,
